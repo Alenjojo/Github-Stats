@@ -1,6 +1,7 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
-import { Form, Card, Image, Icon } from 'semantic-ui-react';
+import { Form, Card, Image, Icon, Message } from 'semantic-ui-react';
+import Charts from './components/Chart';
 
 function App() {
   const [name, setName] = useState('');
@@ -12,14 +13,14 @@ function App() {
   const [userInput, setUserInput] = useState('');
   const [error, setError] = useState(null);
 
-  useEffect(
-    () => {
-      fetch("https://api.github.com/users/example")
-        .then(res => res.json())
-        .then(data => {
-          setData(data)
-        })
-    }, []);
+  // useEffect(
+  //   () => {
+  //     fetch("https://api.github.com/users/example")
+  //       .then(res => res.json())
+  //       .then(data => {
+  //         setData(data)
+  //       })
+  //   }, []);
 
   const setData = ({
     name,
@@ -38,7 +39,9 @@ function App() {
   };
 
   const handleSearch = (e) => {
+    if (e.target.value !== "") {
     setUserInput(e.target.value)
+    }
   }
   const handleSubmit = () => {
     fetch(`https://api.github.com/users/${userInput}`)
@@ -53,26 +56,27 @@ function App() {
         }
       })
   }
-
   return (
     <div >
       <div className="navbar">Github Stats</div>
       <div className="search">
-        <Form onSubmit={handleSubmit}>
-          <Form.Group>
-            <Form.Input placeholder='Github user' name='github user' onChange={handleSearch} />
+        <Form error onSubmit={handleSubmit}>
+            <Form.Input placeholder='Github UserName' name='github user' onChange={handleSearch} />
+            {error ? (
+              <Message
+              error
+              header='User Not Found'
+              content=''
+              />) : null}
             <Form.Button content='Search' />
-          </Form.Group>
         </Form>
       </div>
-      {error ? (<h1>{error}</h1>
-      ) : (
         <diV className="card">
           <Card>
             <Image src={avatar} wrapped ui={false} />
             <Card.Content>
               <Card.Header>{name}</Card.Header>
-              <Card.Header>{userName}</Card.Header>
+              <Card.Header>@{userName}</Card.Header>
             </Card.Content>
             <Card.Content extra>
               <a>
@@ -93,9 +97,10 @@ function App() {
               </a>
             </Card.Content>
           </Card>
-        </diV>
-      )}
-
+      </diV> 
+      <div >
+        <Charts />
+      </div>
     </div>
   );
 }
