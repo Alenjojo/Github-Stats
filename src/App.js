@@ -2,6 +2,7 @@ import './App.css';
 import React, { useEffect, useState } from 'react';
 import { Form, Card, Image, Icon, Message } from 'semantic-ui-react';
 import Charts from './components/Chart';
+import GhPolyglot from 'gh-polyglot';
 
 function App() {
   const [name, setName] = useState('');
@@ -13,15 +14,19 @@ function App() {
   const [userInput, setUserInput] = useState('');
   const [error, setError] = useState(null);
 
-  // useEffect(
-  //   () => {
-  //     fetch("https://api.github.com/users/example")
-  //       .then(res => res.json())
-  //       .then(data => {
-  //         setData(data)
-  //       })
-  //   }, []);
+  const [langData, setLangData] = useState(null);
+  const [repoData, setRepoData] = useState(null);
 
+  useEffect(() => {
+    //   () => {
+    //     fetch("https://api.github.com/users/example")
+    //       .then(res => res.json())
+    //       .then(data => {
+    //         setData(data)
+    //       })
+    // }, []
+  });
+//datas for user profile
   const setData = ({
     name,
     login,
@@ -43,6 +48,7 @@ function App() {
     setUserInput(e.target.value)
     }
   }
+  //onsubmit clicked
   const handleSubmit = () => {
     fetch(`https://api.github.com/users/${userInput}`)
       .then(res => res.json())
@@ -51,14 +57,46 @@ function App() {
           setError(data.message)
         }
         else {
+          getLangData();
+          getRepoData();
           setData(data);
           setError(null);
         }
       })
   }
+  //Getting profile repos
+    const getLangData = () => {
+    const me = new GhPolyglot(`${userInput}`);
+    me.userStats((err, stats) => {
+      if (err) {
+        console.error('Error:', err);
+        setError({ active: true, type: 400 });
+      }
+      setLangData(stats);
+    });
+    };
+  //Get repo data
+    const getRepoData = () => {
+    fetch(`https://api.github.com/users/${userInput}/repos?per_page=100`)
+      .then(response => {
+        if (response.status === 404) {
+          return setError({ active: true, type: 404 });
+        }
+        if (response.status === 403) {
+          return setError({ active: true, type: 403 });
+        }
+        return response.json();
+      })
+      .then(json => setRepoData(json))
+      .catch(error => {
+        setError({ active: true, type: 200 });
+        console.error('Error:', error);
+      });
+  };
   return (
     <div >
       <div className="navbar">Github Stats</div>
+      {/* search bar */}
       <div className="search">
         <Form error onSubmit={handleSubmit}>
             <Form.Input placeholder='Github UserName' name='github user' onChange={handleSearch} />
@@ -71,6 +109,7 @@ function App() {
             <Form.Button content='Search' />
         </Form>
       </div>
+      {/* card view of profile */}
         <diV className="card">
           <Card>
             <Image src={avatar} wrapped ui={false} />
@@ -98,9 +137,9 @@ function App() {
             </Card.Content>
           </Card>
       </diV> 
-      <div >
-        <Charts />
-      </div>
+      <>
+       { langData && repoData &&  <Charts langData={langData} repoData={repoData} />}
+      </>
     </div>
   );
 }
