@@ -15,6 +15,7 @@ const Charts = ({ langData, repoData }) => {
   }
     const initLangChart = () => {
       setLangChartlabel(langData.map(lang => lang.label))
+      const data = langData.map(lang => lang.value);
       setLangChartData(data);
 
     if (data.length > 0) {
