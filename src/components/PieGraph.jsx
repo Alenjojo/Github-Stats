@@ -1,17 +1,26 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
 const PieGraph = ({ data, langChartlabel, langChartbackgroundColor, langChartborderColor }) => {
-    console.log(langChartbackgroundColor)
-        return (
+
+    const buildLegend = legend => {
+    const leg = {
+        position: 'right',
+        langChartlabel: {
+        fontFamily: 'Roboto',
+        },
+    };
+  return legend ? leg : null;
+};        return (
               <div className="bar">
                 <Doughnut
                 width={400}
                 height={600}
                     data={{
-                        langChartlabel,
+                        labels: langChartlabel,
                         datasets: [{
-                            data:data,
+                            data: data,
+                            label:langChartlabel,
                              backgroundColor: langChartbackgroundColor,
                              borderColor: langChartborderColor,
                              borderWidth: 1
@@ -20,16 +29,8 @@ const PieGraph = ({ data, langChartlabel, langChartbackgroundColor, langChartbor
                     }}
                     options={{
                 responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    yAxes: [
-                        {
-                            ticks: {
-                                    beginAtZero: true,
-                                },
-                            },
-                          ]
-                        }
+                        maintainAspectRatio: false,
+                legend: buildLegend(true),
                     }}
             />
                 </div>
