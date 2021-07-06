@@ -1,18 +1,25 @@
 import React, {useEffect, useState } from 'react';
-import { Input, Menu, Segment } from 'semantic-ui-react'
+import { Menu } from 'semantic-ui-react'
 import BarGraphs from './BarGraph';
 import PieGraph from './PieGraph';
+// import {langColors} from '../utils';
 
 const Charts = ({ langData, repoData }) => {
   const [activeItem, setactiveItem] = useState('bar');
+
   const [langChartData, setLangChartData] = useState('');
   const [langChartlabel, setLangChartlabel] = useState('');
   const [langChartbackgroundColor, setLangChartbackgroundColor] = useState('');
   const [langChartborderColor, setLangChartborderColor] = useState('');
 
+  const [langChartDatabar, setLangChartDatabar] = useState('');
+  const [langChartlabelbar, setLangChartlabelbar] = useState('');
+  const [langChartbackgroundColorbar, setLangChartbackgroundColorbar] = useState('');
+  const [langChartborderColorbar, setLangChartborderColorbar] = useState('');
     const handleItemClick = (e, { name }) => {
        setactiveItem(name)
   }
+  //to create most used language
     const initLangChart = () => {
       setLangChartlabel(langData.map(lang => lang.label))
       const data = langData.map(lang => lang.value);
@@ -23,15 +30,42 @@ const Charts = ({ langData, repoData }) => {
         ({ color }) => `#${color.length > 4 ? color.slice(1) : color.slice(1).repeat(2)}B3`,
       ))
       setLangChartborderColor(langData.map(lang => `${lang.color}`))
+      // const axes = false;
+      // const legend = true;
+    }
+  };
+//to create most stared by language
+  const [thirdChartData, setThirdChartData] = useState(null);
+  const initThirdChart = () => {
+    const filteredRepos = repoData.filter(repo => !repo.fork && repo.stargazers_count > 0);
+    const uniqueLangs = new Set(filteredRepos.map(repo => repo.language));
+    const labels = Array.from(uniqueLangs.values()).filter(l => l);
+    setLangChartlabelbar(labels);
+    const data = labels.map(lang => {
+      const repos = filteredRepos.filter(repo => repo.language === lang);
+      const starsArr = repos.map(r => r.stargazers_count);
+      const starSum = starsArr.reduce((a, b) => a + b, 0);
+      return starSum;
+    });
+    setLangChartDatabar(data);
+
+    setThirdChartData(data);
+
+    if (data.length > 0) {
       const axes = false;
       const legend = true;
+      // const borderColor = labels.map(label => langColors[label]);
+      //const backgroundColor = borderColor.map(color => `${color}B3`);
+     // const config = { ctx, chartType, labels, data, backgroundColor, borderColor, axes, legend };
+      //buildChart(config);
+      console.log(data)
     }
   };
     useEffect(() => {
     if (langData.length && repoData.length) {
       initLangChart();
       // initStarChart();
-      // initThirdChart();
+      initThirdChart();
     }
   }, []);
       return (
@@ -50,7 +84,12 @@ const Charts = ({ langData, repoData }) => {
           />
         </Menu>
             </div>
-          {activeItem === 'bar' ? <BarGraphs /> : <PieGraph
+          {activeItem === 'bar' ? <BarGraphs
+            data={langChartDatabar}
+            langChartlabel={langChartlabelbar}
+            langChartbackgroundColor={langChartbackgroundColorbar}
+            langChartborderColor={langChartborderColorbar}
+           /> : <PieGraph
             data={langChartData}
             langChartlabel={langChartlabel}
             langChartbackgroundColor={langChartbackgroundColor}

@@ -1,18 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
-class BarGraphs extends Component {
-    state = {  }
-    render() { 
+const BarGraphs = ({ data, langChartlabel, langChartbackgroundColor, langChartborderColor }) => {
+
         return (
               <div className="bar">
                <Bar
                     data={{
-                        labels: ['Red', 'Blue', 'Yellow', 'Green',
-                            'Purple', 'Orange'],
+                        labels: langChartlabel,
                         datasets: [{
-                            label: '# of Votes',
-                            data: [2, 1, 3, 1, 2, 3],
+                            label: null,
+                            data: data,
                              backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -31,11 +29,7 @@ class BarGraphs extends Component {
             ],
             borderWidth: 1
                         },
-                            {
-                                label: 'Quantity',
-                                data: [1, 2, 3, 4, 2, 2],
-                                backgroundColor: 'orange',
-                        }],
+                    ],
                 }}
                 width={400}
                 height={600}
@@ -54,7 +48,6 @@ class BarGraphs extends Component {
             />
                 </div>
          );
-    }
 }
  
 export default BarGraphs;
