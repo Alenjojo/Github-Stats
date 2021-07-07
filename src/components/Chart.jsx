@@ -3,6 +3,8 @@ import { Menu } from 'semantic-ui-react'
 import BarGraphs from '../utils/BarGraph';
 import PieGraph from '../utils/PieGraph';
 import langColors from '../utils/langColors';
+import Repository from './Repository';
+import '../App.css';
 
 const Charts = ({ langData, repoData }) => {
   const [activeItem, setactiveItem] = useState('Doughnut');
@@ -83,7 +85,7 @@ const Charts = ({ langData, repoData }) => {
             onClick={handleItemClick}
           />
         </Menu>
-            </div>
+          </div>
           {activeItem === 'Doughnut' ? <PieGraph
             data={langChartData}
             langChartlabel={langChartlabel}
@@ -95,6 +97,7 @@ const Charts = ({ langData, repoData }) => {
             langChartbackgroundColor={langChartbackgroundColorbar}
             langChartborderColor={langChartborderColorbar}
           />}
+            {repoData && <Repository repoData={repoData} />}
     </div>
          );
 }
