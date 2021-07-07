@@ -132,7 +132,6 @@ function App() {
       </diV> 
       <>
         {langData && repoData && <Charts langData={langData} repoData={repoData} />}
-        {console.log(repoData)}
       </>
     </div>
   );
