@@ -25,3 +25,8 @@
   width: 55%;
   height: 70%;
 }
+
+.repo-list{
+    margin-top: 40%;
+    position: absolute;
+}
