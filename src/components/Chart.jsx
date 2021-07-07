@@ -1,11 +1,11 @@
 import React, {useEffect, useState } from 'react';
 import { Menu } from 'semantic-ui-react'
 import BarGraphs from './BarGraph';
-import PieGraph from './PieGraph';
-// import {langColors} from '../utils';
+import PieGraph from '../utils/PieGraph';
+import langColors from '../utils/langColors';
 
 const Charts = ({ langData, repoData }) => {
-  const [activeItem, setactiveItem] = useState('bar');
+  const [activeItem, setactiveItem] = useState('Doughnut');
 
   const [langChartData, setLangChartData] = useState('');
   const [langChartlabel, setLangChartlabel] = useState('');
@@ -19,7 +19,7 @@ const Charts = ({ langData, repoData }) => {
     const handleItemClick = (e, { name }) => {
        setactiveItem(name)
   }
-  //to create most used language
+  //to create most used language || Doughnut
     const initLangChart = () => {
       setLangChartlabel(langData.map(lang => lang.label))
       const data = langData.map(lang => lang.value);
@@ -32,9 +32,11 @@ const Charts = ({ langData, repoData }) => {
       setLangChartborderColor(langData.map(lang => `${lang.color}`))
       // const axes = false;
       // const legend = true;
+      // const config = { langChartData, langChartlabel, langChartbackgroundColor, langChartborderColor};
+      // PieGraph(config);
     }
   };
-//to create most stared by language
+//to create most stared by language  || Bar graph
   const [thirdChartData, setThirdChartData] = useState(null);
   const initThirdChart = () => {
     const filteredRepos = repoData.filter(repo => !repo.fork && repo.stargazers_count > 0);
@@ -52,13 +54,11 @@ const Charts = ({ langData, repoData }) => {
     setThirdChartData(data);
 
     if (data.length > 0) {
-      const axes = false;
-      const legend = true;
-      // const borderColor = labels.map(label => langColors[label]);
-      //const backgroundColor = borderColor.map(color => `${color}B3`);
+      const borderColor = labels.map(label => langColors[label]);
+      setLangChartbackgroundColorbar(borderColor);
+      const backgroundColor = borderColor.map(color => `${color}B3`);
+      setLangChartborderColorbar(backgroundColor);
      // const config = { ctx, chartType, labels, data, backgroundColor, borderColor, axes, legend };
-      //buildChart(config);
-      console.log(data)
     }
   };
     useEffect(() => {
@@ -73,27 +73,27 @@ const Charts = ({ langData, repoData }) => {
      <div className="menu">
         <Menu attached='top' tabular>
           <Menu.Item
-            name='bar'
-            active={activeItem === 'bar'}
+            name='Doughnut'
+            active={activeItem === 'Doughnut'}
             onClick={handleItemClick}
           />
           <Menu.Item
-            name='pie'
-            active={activeItem === 'pie'}
+            name='Bar'
+            active={activeItem === 'Bar'}
             onClick={handleItemClick}
           />
         </Menu>
             </div>
-          {activeItem === 'bar' ? <BarGraphs
-            data={langChartDatabar}
-            langChartlabel={langChartlabelbar}
-            langChartbackgroundColor={langChartbackgroundColorbar}
-            langChartborderColor={langChartborderColorbar}
-           /> : <PieGraph
+          {activeItem === 'Doughnut' ? <PieGraph
             data={langChartData}
             langChartlabel={langChartlabel}
             langChartbackgroundColor={langChartbackgroundColor}
             langChartborderColor={langChartborderColor}
+          /> : <BarGraphs
+            data={langChartDatabar}
+            langChartlabel={langChartlabelbar}
+            langChartbackgroundColor={langChartbackgroundColorbar}
+            langChartborderColor={langChartborderColorbar}
           />}
     </div>
          );
