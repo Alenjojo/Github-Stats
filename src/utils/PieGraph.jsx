@@ -1,8 +1,6 @@
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
-const PieGraph = ({ data, langChartlabel, langChartbackgroundColor, langChartborderColor }) => {
-
     const buildLegend = legend => {
     const leg = {
         position: 'right',
@@ -11,7 +9,10 @@ const PieGraph = ({ data, langChartlabel, langChartbackgroundColor, langChartbor
         },
     };
   return legend ? leg : null;
-};        return (
+};  
+
+const PieGraph = config =>{ const { data, langChartlabel, langChartbackgroundColor, langChartborderColor } = config;
+      return (
               <div className="bar">
                 <Doughnut
                 width={400}
