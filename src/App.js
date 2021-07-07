@@ -18,13 +18,6 @@ function App() {
   const [repoData, setRepoData] = useState(null);
 
   useEffect(() => {
-    //   () => {
-    //     fetch("https://api.github.com/users/example")
-    //       .then(res => res.json())
-    //       .then(data => {
-    //         setData(data)
-    //       })
-    // }, []
   });
 //datas for user profile
   const setData = ({
@@ -138,7 +131,8 @@ function App() {
           </Card>
       </diV> 
       <>
-       { langData && repoData &&  <Charts langData={langData} repoData={repoData} />}
+        {langData && repoData && <Charts langData={langData} repoData={repoData} />}
+        {console.log(repoData)}
       </>
     </div>
   );

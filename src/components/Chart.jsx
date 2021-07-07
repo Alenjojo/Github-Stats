@@ -1,6 +1,6 @@
 import React, {useEffect, useState } from 'react';
 import { Menu } from 'semantic-ui-react'
-import BarGraphs from './BarGraph';
+import BarGraphs from '../utils/BarGraph';
 import PieGraph from '../utils/PieGraph';
 import langColors from '../utils/langColors';
 
