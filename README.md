@@ -1,3 +1,6 @@
+# Github-Stats
+This project is intended to show a prettier and understandable form of how your use your github account using Github API.<br>
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
