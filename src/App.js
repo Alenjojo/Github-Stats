@@ -5,14 +5,9 @@ import Charts from './components/Chart';
 import GhPolyglot from 'gh-polyglot';
 
 function App() {
-  const [name, setName] = useState('');
-  const [userName, setUsername] = useState('');
-  const [followers, setFollowers] = useState('');
-  const [following, setFollowing] = useState('');
-  const [repos, setRepos] = useState('');
-  const [avatar, setAvatar] = useState('');
   const [userInput, setUserInput] = useState('');
   const [error, setError] = useState(null);
+  const [data, setData] = useState(null);
 
   const [langData, setLangData] = useState(null);
   const [repoData, setRepoData] = useState(null);
@@ -20,21 +15,7 @@ function App() {
   useEffect(() => {
   });
 //datas for user profile
-  const setData = ({
-    name,
-    login,
-    followers,
-    following,
-    public_repos,
-    avatar_url
-  }) => {
-    setName(name);
-    setUsername(login);
-    setFollowers(followers);
-    setFollowing(following);
-    setRepos(public_repos);
-    setAvatar(avatar_url);
-  };
+
 
   const handleSearch = (e) => {
     if (e.target.value !== "") {
@@ -65,6 +46,7 @@ function App() {
         console.error('Error:', err);
         setError({ active: true, type: 400 });
       }
+      setLangData(null);
       setLangData(stats);
     });
     };
@@ -80,11 +62,16 @@ function App() {
         }
         return response.json();
       })
-      .then(json => setRepoData(json))
+      .then(json => {
+        setRepoData(null);
+        setRepoData(json);
+        console.log(repoData);
+      })
       .catch(error => {
         setError({ active: true, type: 200 });
         console.error('Error:', error);
       });
+
   };
   return (
     <div >
@@ -103,36 +90,39 @@ function App() {
         </Form>
       </div>
       {/* card view of profile */}
-        <diV className="card">
+      <div className="app__center">
+        <div className="app__left">
           <Card>
-            <Image src={avatar} wrapped ui={false} />
+            <Image src={data?.avatar_url} wrapped ui={false} />
             <Card.Content>
-              <Card.Header>{name}</Card.Header>
-              <Card.Header>@{userName}</Card.Header>
+              <Card.Header>{data?.name}</Card.Header>
+              <Card.Header>@{data?.userName}</Card.Header>
             </Card.Content>
             <Card.Content extra>
               <a>
                 <Icon name='user' />
-                {followers} Followers
+                {data?.followers} Followers
               </a>
             </Card.Content>
             <Card.Content extra>
               <a>
                 <Icon name='user' />
-                {repos} Repos
+                {data?.public_repos} Repos
               </a>
             </Card.Content>
             <Card.Content extra>
               <a>
                 <Icon name='user' />
-                {following} Following
+                {data?.following} Following
               </a>
             </Card.Content>
           </Card>
-      </diV> 
-      <>
+      </div>
+      {/* to create the graphs */}
+      <div className="app_right">
         {langData && repoData && <Charts langData={langData} repoData={repoData} />}
-      </>
+        </div>
+        </div>
     </div>
   );
 }

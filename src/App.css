@@ -17,13 +17,19 @@
     margin-top: 3%;
     margin-left: 5%;
 }
-.menu{
-
+.app__center {
+    display: flex;
 }
+
+.app__left {
+    margin-left: 5%;
+    flex: 0.4;
+}
+
 .bar{
   position: absolute;
   width: 55%;
-  height: 70%;
+  height: 60%;
 }
 
 .repo-list{

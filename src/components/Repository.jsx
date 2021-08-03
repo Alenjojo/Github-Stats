@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import FlipMove from 'react-flip-move';
-import { StarFillIcon, RepoForkedIcon} from '@primer/octicons-react'
+import { StarFillIcon, RepoForkedIcon } from '@primer/octicons-react'
+import "./styles/Repository.css"
 
 const Repository = ({ repoData }) => {
 const [topRepos, setTopRepos] = useState([]);
@@ -25,7 +26,7 @@ const [topRepos, setTopRepos] = useState([]);
     return (
          <div className="repo-list">
           {topRepos.length > 0 ? (
-            <FlipMove typeName="ul">
+            <FlipMove typeName="repo-list__ul">
               {topRepos.map(repo => (
                 <li key={repo.id}>
                   <a
@@ -65,7 +66,46 @@ const [topRepos, setTopRepos] = useState([]);
               ))}
             </FlipMove>
           ) : (
-            <p>No available repositories!</p>
+            // <p>No available repositories!</p>
+             <FlipMove typeName="repo-list__ul">
+              {topRepos.map(repo => (
+                <li key={repo.id}>
+                  <a
+                    href={repo.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="repo">
+                    <div className="repo__top">
+                      <div className="repo__name">
+                        <h3>{repo.name}</h3>
+                      </div>
+                      <p>{repo.description}</p>
+                    </div>
+                    <div className="repo__stats">
+                      <div className="repo__stats--left">
+                        <span>
+                          <div
+                            className="language"
+                          />
+                          {repo.language}
+                        </span>
+                         <span>
+                          <StarFillIcon  />
+                          {repo.stargazers_count.toLocaleString()}
+                        </span>
+                        <span>
+                          <RepoForkedIcon size={16} />
+                          {repo.forks.toLocaleString()}
+                        </span>
+                      </div>
+                      <div className="repo__stats--right">
+                        <span>{repo.size.toLocaleString()} KB</span>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </FlipMove>
           )}
             </div>
     );
