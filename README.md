@@ -1,5 +1,6 @@
 # Github-Stats
 This project is intended to show a prettier and understandable form of how your use your github account using Github API.<br>
+<img src="https://user-images.githubusercontent.com/51394913/128054020-427e29ff-647e-4ad8-9d6e-412f0e5fcf22.PNG" />
 
 # Getting Started with Create React App
 
